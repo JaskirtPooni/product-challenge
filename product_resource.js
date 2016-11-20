@@ -1,8 +1,15 @@
+auth = require('./auth.js')();
 const Router = require('restify-router').Router;
 const router = new Router();
 
 function ProductResource(db) {
     productService = require('./product_service')(db);
+    
+
+    //function authenticate(req,res, next) {
+      //  auth.authenticate(req, res, next);
+        //next();
+    //}
 
     function getById(req, res, next) {
         productService.getById(req.params.id)
@@ -75,11 +82,11 @@ function ProductResource(db) {
         next();
     };
 
-    router.get('api/products/:id', getById)
-    router.get('api/admin/products', getAdmin);
     router.get('api/products', getCustomer);
-    router.post('api/products', post);
-    router.del('api/products/:id', del);
+    router.get('api/products/:id', getById);
+    router.get('api/admin/products', auth.authenticate, getAdmin);
+    router.post('api/admin/products', auth.authenticate, post);
+    router.del('api/admin/products/:id', auth.authenticate,del);
     router.put('api/products/:id', rate);
     return router;
 }
