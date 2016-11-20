@@ -1,5 +1,7 @@
+const Router = require('restify-router').Router;
+const router = new Router();
+
 function ProductResource(db) {
-   
     productService = require('./product_service')(db);
 
     function get(req, res, next) {
@@ -39,8 +41,10 @@ function ProductResource(db) {
 
         next();
     };
-
-    return {get,post,del};
+    router.get('api/products', get);
+    router.post('api/products', post);
+    router.del('api/products/:id', del);
+    return router;
 }
 
 module.exports = ProductResource;
