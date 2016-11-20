@@ -15,13 +15,21 @@ function ProductResource(db) {
         next();
     };
 
-    function get(req, res, next) {
-        productService.get()
+    function getAdmin(req, res, next) {
+        productService.get({name: 1, stock: 1})
         .then(results =>{
             res.send(200, results);
         })
         next();
-    };
+    }
+
+    function getCustomer(req, res, next) {
+        productService.get({name: 1})
+        .then(results =>{
+            res.send(200, results);
+        })
+        next();
+    }
 
     function post(req, res, next) {
         if(!req.body.hasOwnProperty('name') || !req.body.hasOwnProperty('price') || !req.body.hasOwnProperty('stock')) {
@@ -54,7 +62,7 @@ function ProductResource(db) {
     };
 
     function rate(req, res, next) {
-        var rating = parseInt(req.params.rating);
+        var rating = parseFloat(req.body.rating);
         if(rating >= 1 && rating <= 10) {
             productService.rate(req.params.id, rating)
             .then(function(result) {
@@ -68,10 +76,11 @@ function ProductResource(db) {
     };
 
     router.get('api/products/:id', getById)
-    router.get('api/products', get);
+    router.get('api/admin/products', getAdmin);
+    router.get('api/products', getCustomer);
     router.post('api/products', post);
     router.del('api/products/:id', del);
-    router.put('api/products/:id/:rating', rate);
+    router.put('api/products/:id', rate);
     return router;
 }
 

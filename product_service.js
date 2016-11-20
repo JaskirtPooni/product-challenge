@@ -4,23 +4,23 @@ function productService(db) {
         productCollection = dbClient.collection('products'),
         assert = require('assert');
 
+    function get(projection) {
+        return productCollection.find({}, projection).toArray()
+            .then(results => {
+                console.log("Found the following products");
+                console.log(results);
+                return results;
+            });
+    }
+
     function getById(productId) {
-        return productCollection.find({_id : new ObjectID(productId)}).toArray()
+        return productCollection.findOne({_id : new ObjectID(productId)})
         .then(results => {
             return results;
         })
         .catch(err=> {
             return err;
         })
-    }
-
-    function get() {
-        return productCollection.find({}).toArray()
-            .then(results => {
-                console.log("Found the following products");
-                console.log(results);
-                return results;
-            });
     }
 
     function post(product) {
@@ -46,8 +46,8 @@ function productService(db) {
     function rate(productId, rating) {
         return getById(productId)
         .then(product => {
-            var newNumRatings = parseInt(product[0].numRatings) + 1;
-            var newRating = (parseInt(product[0].numRatings)*parseFloat(product[0].rating) + rating) / newNumRatings;
+            var newNumRatings = parseInt(product.numRatings) + 1;
+            var newRating = (parseInt(product.numRatings)*parseFloat(product.rating) + rating) / newNumRatings;
             
             productCollection.updateOne({_id : new ObjectID(productId)}, 
                                         { $set: { numRatings : newNumRatings, rating : newRating}})
