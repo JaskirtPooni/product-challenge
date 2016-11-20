@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/JaskirtPooni/product-challenge#readme",
   "dependencies": {
+    "mongodb": "^2.2.11",
     "restify": "^4.3.0"
   }
 }
