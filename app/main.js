@@ -5,6 +5,7 @@ var server = restify.createServer({
     name: 'product server'
 });
 
+//print endpoints being accessed
 server.use(function(req, res, next) {
     console.log(req.method + ' ' + req.url);
     return next();
@@ -13,6 +14,7 @@ server.use(function(req, res, next) {
 server.use(restify.bodyParser());
 server.use(restify.authorizationParser());
 
+// wait for database connection before registering routes
 var db = require('./db_client')
 .then((db) => {
     var product_router = require('./product_resource')(db);

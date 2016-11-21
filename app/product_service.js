@@ -3,7 +3,12 @@ function productService(db) {
         ObjectID = require('mongodb').ObjectID,
         productCollection = dbClient.collection('products'),
         assert = require('assert');
-
+    
+    /**
+   * Retrieves a list of products from the database
+   * @param projection is used to specify the fields that should be returned, the format is {field: 1}
+   * @return a promise telling you the list was fetched successfully or an error has occurred
+   */
     function get(projection) {
         return productCollection.find({}, projection).toArray()
         .then(results => {
@@ -15,6 +20,11 @@ function productService(db) {
         })
     }
 
+    /**
+   * Retrieves a product from the database by Id
+   * @param productId is the Id of the product to retrieve
+   * @return a promise telling you the product was fetched successfully or an error has occurred
+   */
     function getById(productId) {
         return productCollection.findOne({_id : new ObjectID(productId)})
         .then(results => {
@@ -24,6 +34,11 @@ function productService(db) {
         })
     }
 
+    /**
+   * Creates a new product
+   * @param product contains the data for the new product
+   * @return a promise telling you the product was created successfully or an error has occurred
+   */
     function post(product) {
         return productCollection.insert(product)
         .then(result => {
@@ -33,6 +48,11 @@ function productService(db) {
         });
     }
 
+    /**
+   * Deletes a product from the database by Id
+   * @param productId is the Id of the product to delete
+   * @return a promise telling you the product was deleted successfully or an error has occurred
+   */
     function del(productId) {
         return productCollection.deleteOne({_id : new ObjectID(productId)})
         .then(results => {
@@ -42,6 +62,12 @@ function productService(db) {
         })
     }
 
+    /**
+   * Updates the rating of a product from the database by Id
+   * @param productId is the Id of the product to rate
+   * @param rating is the rating the customer would like to rate the product
+   * @return a promise telling you the rating was updated successfully or an error has occurred
+   */
     function rate(productId, rating) {
         return getById(productId)
         .then(product => {

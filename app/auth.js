@@ -1,7 +1,7 @@
-
 function Auth() {
-var restify = require('restify')
+    var restify = require('restify')
 
+    // function for basic auth using login credentials that are hardcoded
     function authenticate (req, res, next) {
         admins = {
             admin: {
