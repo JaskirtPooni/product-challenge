@@ -1,32 +1,32 @@
-Product Challenge
+#Product Challenge
 
 An node application to provide back-end support for a shopping cart.
 
 
-Prerequisites
+##Prerequisites
 
 mongodb - installation instructions (https://docs.mongodb.com/manual/administration/install-community/)
 
 node.js - installation instructions (https://docs.npmjs.com/getting-started/installing-node)
 
 
-Installing and Running app 
+##Installing and Running app 
 
-install dependencies - npm install (in package directory, no arguments)
+* install dependencies - npm install (in package directory, no arguments)
 
-start mongodb - mongod
+* start mongodb - mongod
 
-start app - node ./app/main.js (in package directory, no arguments)
+* start app - node ./app/main.js (in package directory, no arguments)
 
 It is easiest to manually test using Postman
 
 
-Running the tests
+##Running the tests
 
 run tests - ./node_modules/mocha/bin/mocha (in package directory, no arguments)
 
 
-Stories and correlating endpoints - (Note admin endpoints require a username:admin and password:admin to be passed)
+##Stories and correlating endpoints - (Note admin endpoints require a username:admin and password:admin to be passed)
 
 1. As a customer, I can see a list of available catalog products I can choose from. - get('api/products')
 
@@ -47,15 +47,15 @@ product price. - get('api/products/:id')
 stock. - get('api/admin/products')
 
 
-Extra endpoints
+##Extra endpoints
 
-Retrieve list of carts - get('api/cart')
+* Retrieve list of carts - get('api/cart')
 
-Create cart - post('api/cart')
+* Create cart - post('api/cart')
 
-Delete cart - del('api/cart/:id')
+* Delete cart - del('api/cart/:id')
 
 
-Authors
+##Authors
 
 Jaskirt Pooni
