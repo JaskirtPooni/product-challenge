@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/JaskirtPooni/product-challenge#readme",
   "dependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.1.2",
     "mongodb": "^2.2.11",
     "restify": "^4.3.0",
     "restify-router": "^0.2.1"

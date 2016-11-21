@@ -11,6 +11,8 @@ function cartService(db) {
                 console.log("Found the following carts");
                 console.log(results);
                 return results;
+            }).catch(err=> {
+                throw err;
             });
     }
 
@@ -20,71 +22,78 @@ function cartService(db) {
             return results;
         })
         .catch(err=> {
-            return err;
+            throw err;
         })
     }
 
     function post(cart) {
         return cartCollection.insert(cart)
-            .then(function () {
-                return 'success';
+            .then(result => {
+                return result;
             })
             .catch((err) => {
-                return err;
+                throw err;
             });
     }
 
     function del(cartId) {
         return cartCollection.deleteOne({_id : new ObjectID(cartId)})
-        .then(results => {
-            return 'success';
+        .then(result => {
+            return result;
         })
         .catch((err) => {
-            return err;
+            throw err;
         })
     }
 
     function add(cartId, prodId) {
         return products.getById(prodId)
         .then(product => {
-            getById(cartId)
+            return getById(cartId)
             .then(cart => {
-                var products = cart.products.filter(function (x) {
+                var cart_products = cart.products.filter(function (x) {
                     return x.productId == prodId;
                 });
 
-                if(products.length > 0){
-                    var newNum = products[0].num + 1;
+                if(cart_products.length > 0){
+                    var newNum = cart_products[0].num + 1;
                     if(newNum <= product.stock){
-                        cartCollection.updateOne({_id : new ObjectID(cartId), "products.productId" : new ObjectID(prodId)}, 
+                        return cartCollection.updateOne({_id : new ObjectID(cartId), "products.productId" : new ObjectID(prodId)}, 
                                             { $set: { "products.$.num": newNum }})
                         .then(results => {
-                            return 'success';
-                        });
+                            return results;
+                        }).catch(function(err) {
+                            throw err;
+                        });;
                     } else {
-                        return 'failed';
+                        return Promise.reject('Update Failed Not enough stock');
                     }
                 } else {
-                    cartCollection.updateOne({_id : new ObjectID(cartId)},
+                    if(product.stock > 0) {
+                        return cartCollection.updateOne({_id : new ObjectID(cartId)},
                                                 { $push: { products: {productId: new ObjectID(prodId), num: 1 }}})
-                    .then(results => {
-                        return 'success';
-                    }).catch(function(err) {
-                        return err;
-                    });
+                        .then(results => {
+                            return results;
+                        }).catch(function(err) {
+                            throw err;
+                        });
+                    } else {
+                        return Promise.reject('Update Failed Not enough stock');
+                    }
+                    
                 }  
             }).catch(function(err) {
-                return err;
+                throw err;
             });
         }).catch(function(err) {
-            res.send(500);
+            throw err;
         });
     }
 
     function remove(cartId, prodId) {
         return products.getById(prodId)
         .then(product => {
-            getById(cartId)
+            return getById(cartId)
             .then(cart => {
                 var products = cart.products.filter(function (x) {
                     return x.productId == prodId;
@@ -93,30 +102,30 @@ function cartService(db) {
                 if(products.length > 0){
                     var newNum = products[0].num - 1;
                     if(newNum > 0){
-                        cartCollection.updateOne({_id : new ObjectID(cartId), "products.productId" : new ObjectID(prodId)}, 
+                        return cartCollection.updateOne({_id : new ObjectID(cartId), "products.productId" : new ObjectID(prodId)}, 
                                             { $set: { "products.$.num": newNum }})
                         .then(results => {
-                            return 'success';
+                            return results;
                         }).catch(function(err) {
-                            return err;
+                            throw err;
                         });
                     } else {
-                        cartCollection.updateOne({_id : new ObjectID(cartId)},
+                        return cartCollection.updateOne({_id : new ObjectID(cartId)},
                                                 { $pull: { products: {productId: new ObjectID(prodId)}}})
                         .then(results => {
-                            return 'success';
+                            return results;
                         }).catch(function(err) {
-                            return err;
+                            throw err;
                         });
                     }
                 } else {
                     return 'failed';
                 }  
             }).catch(function(err) {
-                return err;
+                throw err;
             });
         }).catch(function(err) {
-            res.send(500);
+            throw err;
         });
     }
 

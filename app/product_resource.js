@@ -4,12 +4,6 @@ const router = new Router();
 
 function ProductResource(db) {
     productService = require('./product_service')(db);
-    
-
-    //function authenticate(req,res, next) {
-      //  auth.authenticate(req, res, next);
-        //next();
-    //}
 
     function getById(req, res, next) {
         productService.getById(req.params.id)
