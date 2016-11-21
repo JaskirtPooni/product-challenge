@@ -2,6 +2,7 @@ expect = require('chai').expect;
 dbClient = require('./fakes/fake_db_client')();
 productService = require('../app/product_service')(dbClient);
 
+// mock products to be used in the test cases
 products = [
   {
     "_id": "5831558452a9495d8c6062fa",
@@ -148,6 +149,7 @@ describe('Product Service', () => {
                   done();
               })
               .then(result=>{
+                  // check that the new rating is correct
                   expect(result.rating).to.equal(7.5);
                   expect(result.numRatings).to.equal(2);
                   done();

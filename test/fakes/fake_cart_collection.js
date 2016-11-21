@@ -1,5 +1,11 @@
+// fake collection to mock the mongo database 
 function fake_cart_collection(){
-
+    
+    /**
+   * function to mock the find call to the database 
+   * @param filter to filter search results, but will be ignored for the mock
+   * @return a promise telling you the list was fetched successfully 
+   */
     function find(filter) {
         return { 
             toArray() {
@@ -8,6 +14,11 @@ function fake_cart_collection(){
         } 
     }
 
+    /**
+   * function to mock the findOne call to the database 
+   * @param filter to filter search results, used to provide different mocks for different tests
+   * @return a promise either containing a succesfull message, error message, or a mock cart for testing
+   */
     function findOne(filter) {
         if (filter._id == '5831558452a9495d8c6062fd') {
             return Promise.resolve('Find Succeeded');   
@@ -50,6 +61,11 @@ function fake_cart_collection(){
         }
     }
     
+    /**
+   * function to mock the insert call to the database 
+   * @param cart that has different ids to help simulate an error while inserting
+   * @return a promise either containing a succesfull message, error message
+   */
     function insert(cart) {     
         if (cart._id == '583155c352a9495d8c6062ff') {
             return Promise.reject('Insert Failed');
@@ -58,6 +74,11 @@ function fake_cart_collection(){
         }
     }
 
+    /**
+   * function to mock the deleteOne call to the database 
+   * @param filter to help simulate an error while inserting
+   * @return a promise either containing a succesfull message, error message
+   */
     function deleteOne(filter) {
         if (filter._id == '5831558452a9495d8c6062fd') {
             return Promise.resolve('Delete Succeeded');
@@ -66,6 +87,11 @@ function fake_cart_collection(){
         }
     }
 
+    /**
+   * function to mock the updateOne call to the database 
+   * @param filter to help simulate an error while inserting
+   * @return a promise either containing a succesfull message, error message
+   */
     function updateOne(filter, product) {
         if (filter._id == "583155c352a9495d8c6062af" || filter._id == "583155c352a9495d8c6062fe") {
             return Promise.reject('Update Failed');

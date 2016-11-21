@@ -2,6 +2,7 @@ expect = require('chai').expect;
 dbClient = require('./fakes/fake_db_client')();
 cartService = require('../app/cart_service')(dbClient);
 
+// mock carts to be used in the test cases
 carts = [
   {
     "_id": "5831558452a9495d8c6062fd",
@@ -30,6 +31,7 @@ carts = [
 
 ];
 
+// mock products to be used in the test cases
 cart_products = [
   {
     "_id": "583155c352a9495d8c6062fc",
